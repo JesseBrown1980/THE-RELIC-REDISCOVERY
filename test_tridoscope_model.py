@@ -10,17 +10,22 @@ from tridoscope_model import (
     OpticalSurface,
     add_vectors,
     circular_beam_intensity,
+    center_of_mass_acceleration,
     coating_retention,
     domain_status,
     gyro_family,
     invert_gyro,
+    independent_axis_determinant,
     optical_torque,
     oiled_light_state,
     radiation_force_vector,
     render_demo,
+    rotational_energy_joules,
+    shell_reaction_torque,
     shannon_entropy_bits,
     spherical_shelf,
     thrust_to_weight,
+    wheel_angular_momentum,
 )
 
 
@@ -88,6 +93,27 @@ class TridoscopeModelTests(unittest.TestCase):
     def test_zero_shannon_level_is_deterministic_not_empty(self):
         self.assertEqual(shannon_entropy_bits((1.0, 0.0, 0.0)), 0.0)
 
+    def test_three_reaction_wheel_axes_span_attitude_space(self):
+        determinant = independent_axis_determinant(((1, 0, 0), (0, 1, 0), (0, 0, 1)))
+        self.assertTrue(math.isclose(abs(determinant), 1.0))
+
+    def test_wheel_and_shell_torques_are_equal_and_opposite(self):
+        self.assertEqual(
+            shell_reaction_torque(((1.0, 0.0, 0.0), (0.0, -2.0, 0.0))),
+            (-1.0, 2.0, 0.0),
+        )
+
+    def test_internal_spin_does_not_enter_center_of_mass_acceleration(self):
+        acceleration = center_of_mass_acceleration(2.0, (2.0, 0.0, 0.0), (0.0, 0.0, -1.0))
+        self.assertEqual(acceleration, (1.0, 0.0, -1.0))
+
+    def test_wheel_momentum_preserves_axis_and_spin_sign(self):
+        self.assertEqual(wheel_angular_momentum(2.0, -3.0, (0, 1, 0)), (-0.0, -6.0, -0.0))
+
+    def test_rotational_energy_is_positive_for_either_spin_sign(self):
+        self.assertEqual(rotational_energy_joules(2.0, 3.0), 9.0)
+        self.assertEqual(rotational_energy_joules(2.0, -3.0), 9.0)
+
     def test_oiled_light_is_an_optical_state_not_magnetization(self):
         state = oiled_light_state("LINEAR", 0.5, OpticalSurface(0.2, 0.3, 0.5), 2.0)
         self.assertEqual(len(state), 6)
@@ -114,9 +140,12 @@ class TridoscopeModelTests(unittest.TestCase):
         self.assertIn("center_value=1", rows[0])
         self.assertIn("object=3D_SPHERICAL_DRADIL_X3_CENTER_4", rows[1])
         self.assertIn("magnetization=0", rows[1])
+        self.assertIn("attitude_control=THREE_INTERNAL_REACTION_WHEELS", rows[1])
+        self.assertIn("translation=EXTERNAL_FORCE_ONLY", rows[1])
         self.assertIn("antigravity=0", rows[3])
         self.assertIn("ftl=0", rows[3])
         self.assertIn("order=HBI_HBP_SHA_SH_HASH", rows[4])
+        self.assertIn("throw_test=0", rows[5])
         self.assertTrue(all(row.endswith("json=0") for row in rows))
 
 

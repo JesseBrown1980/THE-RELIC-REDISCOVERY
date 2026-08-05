@@ -159,7 +159,7 @@ try {
     Write-Host '[safety] E=0 network=0 port_open=0 background_service=0 destructive_wipe=0 auto_recovery=0'
 
     Invoke-PythonChecked -Label 'Relic reference tests' -WorkingDirectory $repoRoot `
-        -Arguments @('-m', 'unittest', '-v') -ExpectedTests 40
+        -Arguments @('-m', 'unittest', '-v') -ExpectedTests 45
     Invoke-PythonChecked -Label 'Relic expanding-wave view' -WorkingDirectory $repoRoot `
         -Arguments @('relic_rediscovery.py', '--levels', $Levels.ToString())
     Invoke-PythonChecked -Label 'SEN_T_I_E_N_C_E microtubule/claustrum hypothesis view' `
@@ -192,8 +192,8 @@ try {
 
         $receipt = Join-Path $simulator 'receipts\CODEX-RELIC-METATAG-COMPARISON-2026-08-05.hbp'
         Assert-ReceiptSources -ReceiptPath $receipt -WorkspaceRoot $workspaceRoot
-        if ($script:PassedTests -ne 118) {
-            throw "Integrated launcher expected 118 tests but observed $script:PassedTests."
+        if ($script:PassedTests -ne 123) {
+            throw "Integrated launcher expected 123 tests but observed $script:PassedTests."
         }
         Write-Host "RESULT|status=PASS|scope=RELIC_SIMULATED_UNIVERSE|tests=$script:PassedTests|center=1|order=HBI_HBP_SHA_SH_HASH|E=0|json=0"
         $launcherExitCode = 0

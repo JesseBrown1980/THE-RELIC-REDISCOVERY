@@ -187,6 +187,59 @@ def gyro_family(inversions: int) -> str:
     return GYRO_FAMILIES[inversions]
 
 
+def wheel_angular_momentum(
+    moment_of_inertia_kg_m2: float,
+    angular_velocity_rad_s: float,
+    axis: Sequence[float],
+) -> tuple[float, float, float]:
+    inertia = float(moment_of_inertia_kg_m2)
+    velocity = float(angular_velocity_rad_s)
+    if not math.isfinite(inertia) or inertia <= 0:
+        raise ValueError("moment_of_inertia_kg_m2 must be finite and positive")
+    if not math.isfinite(velocity):
+        raise ValueError("angular_velocity_rad_s must be finite")
+    direction = unit_vector(axis)
+    return tuple(inertia * velocity * value for value in direction)  # type: ignore[return-value]
+
+
+def rotational_energy_joules(moment_of_inertia_kg_m2: float, angular_velocity_rad_s: float) -> float:
+    inertia = float(moment_of_inertia_kg_m2)
+    velocity = float(angular_velocity_rad_s)
+    if not math.isfinite(inertia) or inertia <= 0 or not math.isfinite(velocity):
+        raise ValueError("inertia must be positive and velocity finite")
+    return 0.5 * inertia * velocity * velocity
+
+
+def shell_reaction_torque(
+    wheel_torque_vectors: Sequence[Sequence[float]],
+) -> tuple[float, float, float]:
+    wheel_total = add_vectors(wheel_torque_vectors)
+    return tuple(-value for value in wheel_total)  # type: ignore[return-value]
+
+
+def independent_axis_determinant(axes: Sequence[Sequence[float]]) -> float:
+    prepared = tuple(unit_vector(axis) for axis in axes)
+    if len(prepared) != 3:
+        raise ValueError("exactly three axes are required")
+    first, second, third = prepared
+    return first[0] * (second[1] * third[2] - second[2] * third[1]) - first[1] * (
+        second[0] * third[2] - second[2] * third[0]
+    ) + first[2] * (second[0] * third[1] - second[1] * third[0])
+
+
+def center_of_mass_acceleration(
+    mass_kg: float,
+    external_force_newtons: Sequence[float],
+    gravity_m_s2: Sequence[float] = (0.0, 0.0, -STANDARD_GRAVITY_M_S2),
+) -> tuple[float, float, float]:
+    mass = float(mass_kg)
+    if not math.isfinite(mass) or mass <= 0:
+        raise ValueError("mass_kg must be finite and positive")
+    force = _vector3(external_force_newtons, "external_force_newtons")
+    gravity = _vector3(gravity_m_s2, "gravity_m_s2")
+    return tuple(force[index] / mass + gravity[index] for index in range(3))  # type: ignore[return-value]
+
+
 def thrust_to_weight(force_newtons: float, mass_kg: float) -> float:
     force = _finite_nonnegative(force_newtons, "force_newtons")
     mass = float(mass_kg)
@@ -227,14 +280,15 @@ def render_demo() -> str:
         f"HBI|model=TRI_D_O_A_E_SCOPE|{basis}|source_3i_atlas=HELD_FOR_EXACT_HF_POINTER|json=0",
         "HBP|force=radiation_pressure|formula=P_over_c_times_A_plus_2R|"
         f"object=3D_SPHERICAL_DRADIL_X3_CENTER_4|oiled={'_'.join(oiled)}|"
-        "magnetization=0|translation=MEASURED_PHYSICS|rotation=MEASURED_PHYSICS|json=0",
+        "magnetization=0|attitude_control=THREE_INTERNAL_REACTION_WHEELS|"
+        "translation=EXTERNAL_FORCE_ONLY|rotation=MEASURED_PHYSICS|json=0",
         f"SHA|value={sha}|byte_commitment=1|json=0",
         "SH|antigravity=0|ftl=0|null_space=UNVERIFIED|hyperspace=UNVERIFIED|"
         "quazi_space=UNVERIFIED|quasi_space=UNVERIFIED|json=0",
         f"HASH|value={final_hash}|order=HBI_HBP_SHA_SH_HASH|"
         "transport_chain_inferred=0|json=0",
         "BOUNDARY|simulation_only=1|laser_build_instruction=0|human_exposure=0|"
-        "device_claim=0|json=0",
+        "throw_test=0|high_speed_rotor_build=0|device_claim=0|json=0",
     )
     return "\n".join(rows)
 

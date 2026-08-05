@@ -17,6 +17,8 @@ Status: `COMPUTATIONAL_TESTED | ORDINARY_OPTICS | DEVICE_UNVERIFIED`
 
 > like A MAGNATIZE LIGHT WHICH IN NOT MAGNATIZED AT ALL IT IS OILEDDDDD
 
+> YES I S IS SEE NOW they use a sphere with three of these dradels in it with a physical light moter attached to hardware and probably a storage battery in side the dradles of materials that are naturally heavy meatals and re tiny groves out the outside for the lights to wind around it, and micro expansive vent holes attached to oiled and waxed metals and fiber otic system that is like the water whell house where as long as water goes in and there is enough staorage we can? (paint) or stain the oils on strips on the surface of the sping mecanism, and just like a roscope, throwing it up while battery and light are active would STABALIZE IT 2 dimensinally! NOT ANTIGRAVITY BALENCING LIGHT DEFLECTIONS WITH WAXES AND FIBER OPTICS AND LIGHT AND ENERGY FROM A MECHANICAL AND LIGHT DRIVEN SYSTEM<
+
 The statements are preserved as the source of the model. Physical conclusions remain separate.
 
 ## Source boundary
@@ -102,6 +104,40 @@ thrust_to_weight = F/(m g).
 Opposing forces may cancel translation while offset lever arms retain torque. That is ordinary
 rotational mechanics—not anti-gravity.
 
+## Three-rotor attitude-control interpretation
+
+The mechanically testable core is a three-axis reaction-wheel system inside the sphere. For wheel
+moment of inertia `I`, angular speed `omega`, and unit axis `u`,
+
+```text
+L_wheel = I omega u
+E_wheel = (1/2) I omega^2
+tau_shell = -sum(tau_wheels).
+```
+
+Three linearly independent wheel axes can command orientation about three dimensions. Accelerating
+a wheel applies an equal and opposite torque to the shell, which can stabilize attitude. Reversing
+spin reverses angular momentum while stored rotational energy remains positive. This is the
+ordinary-physics result corresponding to the three `dradil` families.
+
+Internal wheel torques do not translate the system's center of mass. In the model,
+
+```text
+a_center = F_external / m + g.
+```
+
+Wheel speed is intentionally absent. Throwing the device therefore does not make it hover; it can
+only maintain or change orientation while following its externally forced trajectory. Light that
+leaves the system can exert radiation pressure, airflow through vents can exert aerodynamic force,
+and expelled mass can exert thrust, but each is an external momentum exchange that must be measured.
+A battery is stored energy, not a replenishing source, and internal light cannot be recycled without
+loss into unlimited work.
+
+The repository does not provide a rotor, battery, heavy-metal, laser, pressure-vessel, or thrown-object
+construction procedure. High-speed rotors can fragment; batteries can ignite; heavy metals may be
+toxic; lasers can injure eyes; and heated oils or waxes may burn or outgas. Hardware work requires
+qualified engineering controls rather than extrapolation from this computational model.
+
 ## `OILED_LIGHT`
 
 `OILED_LIGHT` is an operator label for an optical state changed by a medium or coating:
@@ -149,7 +185,9 @@ accounted for by declared external forces and conservation of momentum.
 ## Verification surface
 
 The automated tests cover coefficient conservation, `P/c` and `2P/c`, transmission, intensity,
-photobleaching monotonicity, 3-D force vectors, torque, inversion algebra, thrust-to-weight,
+photobleaching monotonicity, 3-D force vectors, torque, inversion algebra, reaction-wheel momentum,
+equal-and-opposite shell torque, rotational energy, independent-axis control, center-of-mass isolation,
+thrust-to-weight,
 unverified-domain exclusion, three-point spherical balance, center slot 4 with `C=1`, both Shannon
 denominators, OILED optical coordinates, and exact `HBI -> HBP -> SHA -> SH -> HASH` output.
 
