@@ -17,6 +17,7 @@ EVIDENCE_ORDER = ("HBI", "HBP", "SHA", "SH", "HASH")
 GYRO_FAMILIES = ("GYRO", "ANTI_GYRO", "ANTI_ANTI_GYRO")
 AXES = ("X", "Y", "Z")
 UNVERIFIED_DOMAINS = ("NULL_SPACE", "HYPERSPACE", "QUAZI_SPACE", "QUASI_SPACE")
+OPERATOR_FORCE_LABEL = "LIGHT_BALANCING"
 CENTER_SLOT = 4
 CENTER_VALUE = 1
 OUTER_SLOTS = (1, 2, 3)
@@ -240,6 +241,19 @@ def center_of_mass_acceleration(
     return tuple(force[index] / mass + gravity[index] for index in range(3))  # type: ignore[return-value]
 
 
+def null_space_gpu_acceleration(
+    force_enabled: bool = False,
+    forced_acceleration_m_s2: Sequence[float] = (0.0, 0.0, 0.0),
+) -> tuple[float, float, float]:
+    """Simulation-only null-domain gate; it makes no claim about physical gravity."""
+    acceleration = _vector3(forced_acceleration_m_s2, "forced_acceleration_m_s2")
+    if not force_enabled:
+        if any(value != 0.0 for value in acceleration):
+            raise ValueError("NULL_SPACE_GPU acceleration requires force_enabled")
+        return (0.0, 0.0, 0.0)
+    return acceleration
+
+
 def thrust_to_weight(force_newtons: float, mass_kg: float) -> float:
     force = _finite_nonnegative(force_newtons, "force_newtons")
     mass = float(mass_kg)
@@ -281,14 +295,17 @@ def render_demo() -> str:
         "HBP|force=radiation_pressure|formula=P_over_c_times_A_plus_2R|"
         f"object=3D_SPHERICAL_DRADIL_X3_CENTER_4|oiled={'_'.join(oiled)}|"
         "magnetization=0|attitude_control=THREE_INTERNAL_REACTION_WHEELS|"
-        "translation=EXTERNAL_FORCE_ONLY|rotation=MEASURED_PHYSICS|json=0",
+        "translation=EXTERNAL_FORCE_ONLY|rotation=MEASURED_PHYSICS|"
+        "operator_force_label=LIGHT_BALANCING|json=0",
         f"SHA|value={sha}|byte_commitment=1|json=0",
         "SH|antigravity=0|ftl=0|null_space=UNVERIFIED|hyperspace=UNVERIFIED|"
-        "quazi_space=UNVERIFIED|quasi_space=UNVERIFIED|json=0",
+        "quazi_space=UNVERIFIED|quasi_space=UNVERIFIED|"
+        "null_space_gpu_acceleration=ZERO_UNLESS_EXPLICITLY_FORCED|json=0",
         f"HASH|value={final_hash}|order=HBI_HBP_SHA_SH_HASH|"
         "transport_chain_inferred=0|json=0",
         "BOUNDARY|simulation_only=1|laser_build_instruction=0|human_exposure=0|"
-        "throw_test=0|high_speed_rotor_build=0|device_claim=0|json=0",
+        "throw_test=0|high_speed_rotor_build=0|device_claim=0|"
+        "physical_gravity_false_claim=0|json=0",
     )
     return "\n".join(rows)
 

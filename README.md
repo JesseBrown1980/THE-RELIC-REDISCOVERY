@@ -125,6 +125,11 @@ The [`TRI_D_O_A_E_SCOPE` test plan](TRIDOSCOPE-LIGHT-ABSORPTION-TEST-PLAN.md) ad
 ordinary radiation-pressure, optical-torque, `OILED_LIGHT`, three-inversion gyro provenance,
 the three-point spherical shelf, center slot 4 with `C=1`, and separate three-state/four-state
 Shannon ledgers. It explicitly grants no anti-gravity, FTL, or unverified-space force term.
+Its `LIGHT_BALANCING` operator vocabulary and `NULL_SPACE_GPU` zero-unless-forced rule are
+simulation labels, kept separate from physical claims. The public-evidence comparator checks a
+NOAA published acceleration value and RCSB PDB neuronal microtubule structure metadata: the
+current acceleration observation favors standard external acceleration over a zero prediction,
+while the microscopy record confirms microtubule structure without proving null space or consciousness.
 
 ```powershell
 ./scripts/launch-relic.ps1

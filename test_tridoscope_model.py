@@ -16,6 +16,7 @@ from tridoscope_model import (
     gyro_family,
     invert_gyro,
     independent_axis_determinant,
+    null_space_gpu_acceleration,
     optical_torque,
     oiled_light_state,
     radiation_force_vector,
@@ -129,6 +130,10 @@ class TridoscopeModelTests(unittest.TestCase):
         self.assertEqual(domain_status("LIGHT_SPACE"), ("MEASURED_PHYSICS_AVAILABLE", 1))
         for domain in ("NULL_SPACE", "HYPERSPACE", "QUAZI_SPACE", "QUASI_SPACE"):
             self.assertEqual(domain_status(domain), ("UNVERIFIED", 0))
+        self.assertEqual(null_space_gpu_acceleration(), (0.0, 0.0, 0.0))
+        self.assertEqual(null_space_gpu_acceleration(True, (1.0, 2.0, 3.0)), (1.0, 2.0, 3.0))
+        with self.assertRaises(ValueError):
+            null_space_gpu_acceleration(False, (0.0, 0.0, -9.80665))
 
     def test_render_preserves_order_and_safety_boundaries(self):
         rows = render_demo().splitlines()
@@ -142,10 +147,12 @@ class TridoscopeModelTests(unittest.TestCase):
         self.assertIn("magnetization=0", rows[1])
         self.assertIn("attitude_control=THREE_INTERNAL_REACTION_WHEELS", rows[1])
         self.assertIn("translation=EXTERNAL_FORCE_ONLY", rows[1])
+        self.assertIn("operator_force_label=LIGHT_BALANCING", rows[1])
         self.assertIn("antigravity=0", rows[3])
         self.assertIn("ftl=0", rows[3])
         self.assertIn("order=HBI_HBP_SHA_SH_HASH", rows[4])
         self.assertIn("throw_test=0", rows[5])
+        self.assertIn("physical_gravity_false_claim=0", rows[5])
         self.assertTrue(all(row.endswith("json=0") for row in rows))
 
 

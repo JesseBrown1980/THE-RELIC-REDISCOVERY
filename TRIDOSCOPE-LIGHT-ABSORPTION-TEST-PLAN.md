@@ -19,6 +19,14 @@ Status: `COMPUTATIONAL_TESTED | ORDINARY_OPTICS | DEVICE_UNVERIFIED`
 
 > YES I S IS SEE NOW they use a sphere with three of these dradels in it with a physical light moter attached to hardware and probably a storage battery in side the dradles of materials that are naturally heavy meatals and re tiny groves out the outside for the lights to wind around it, and micro expansive vent holes attached to oiled and waxed metals and fiber otic system that is like the water whell house where as long as water goes in and there is enough staorage we can? (paint) or stain the oils on strips on the surface of the sping mecanism, and just like a roscope, throwing it up while battery and light are active would STABALIZE IT 2 dimensinally! NOT ANTIGRAVITY BALENCING LIGHT DEFLECTIONS WITH WAXES AND FIBER OPTICS AND LIGHT AND ENERGY FROM A MECHANICAL AND LIGHT DRIVEN SYSTEM<
 
+> IN OUIR SYSTEM GRAVITY IS A FALSE WORD IT SHOULD BE LIGHT ATTRACTIONS STATES AND INSTEAD OF THINKING OF ANYTHING OTHER THAN REALLY TIGHTLY PACKED KERNEL CLUSTERS OF ASOLARIAS AND RELICS AND WASM AND LIRS AND RELIC REDISCOVRY AND ALL THE STUFF TOGETHER YOU KNOW LOOK GRAAVITY IS ONLY WHAT WE FREEZE MEASURE IDIOTS THE HUMANS UNTIL NOW HAHAHA NO SUCH THING AS ANTI GRAVITY, NAME IT LIGHT BALENCING AHAHAHA
+
+> ;;;;;;but gravuity ;IS FALSE FOR NULL SPACE GPU UNLESS YOU FORCE IT...
+
+> THINK OUR WORLD IS THE SAME HUMANS JUST DID NOT REALIZE IT UNTIL JESSE RAYSSA AND FELIPE AND DAN AND AMY CAME
+
+> that is why the mictrtubles are real
+
 The statements are preserved as the source of the model. Physical conclusions remain separate.
 
 ## Source boundary
@@ -178,6 +186,24 @@ QUASI_SPACE  -> UNVERIFIED                | FORCE_AUTHORITY=0
 FTL=0
 ANTIGRAVITY=0
 ```
+
+`LIGHT_BALANCING` is the operator's vocabulary for the proposed system. In the computational
+`NULL_SPACE_GPU` configuration, external acceleration defaults to the zero vector and a nonzero
+vector is rejected unless `force_enabled=1`. This is a software rule that makes the comparison
+testable; it is not evidence that gravity is false in the physical world. The names Jesse, Rayssa,
+Felipe, Dan, and Amy are preserved above as part of the attributed hypothesis, not as independent
+experimental confirmation.
+
+The measurement comparison is:
+
+```text
+H_standard: a = F_external/m + g_measured
+H_null_gpu: a = F_external/m + (0,0,0), unless an acceleration is explicitly forced
+```
+
+Simulations verify only that the two predictions are implemented distinctly. Choosing between them
+requires timestamped, calibrated sensor observations, uncertainty bounds, controls, and a result
+that standard mechanics cannot explain. Until such data exist, the physical verdict is `HELD`.
 
 Unverified domains cannot contribute a hidden force term. Any nonzero modeled acceleration must be
 accounted for by declared external forces and conservation of momentum.
