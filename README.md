@@ -58,19 +58,42 @@ The proof is induction:
 Therefore the identity holds for all `n >= 0`. This proves the unbounded mathematical sequence;
 it does not by itself prove that nature, quantum hardware, or intelligence follows the model.
 
-## The free center
+## The free center is one at every Z level
 
-The center is an invariant symbol `C`, separate from the multiplied outward count:
+The center is an invariant symbol `C` with value `1`, separate from the multiplied outward count:
 
 ```text
-S_n = C (+) A_n outward addresses
-R(C) = C
+C(S_n,z) = 1 for every structure S_n and every Z coordinate z
+S_n = C=1 (+) A_n outward addresses
+R(C=1) = C=1
 R(A) = 3A
 ```
 
-Every structure therefore retains one deliberately unassigned center while the outward field
-expands. Keeping `C` outside `A_n` prevents the formula from silently multiplying one center into
-many centers.
+The canonical signed Z levels `{-1/3, 0, +1/3}` do not alter the center:
+`C(-1/3)=C(0)=C(+1/3)=1`. "Free" means invariant and excluded from outward multiplication,
+not empty or zero.
+
+The one-way closure is:
+
+```text
+X -> Y -> Z -> END_0 -> NEXT_IS
+BIDIRECTIONAL=0
+REVERSE=0
+ROUND_TRIP=0
+EXCHANGE=0
+```
+
+`END_0` changes the terminal phase address; it never changes `C=1`. Closure continues the
+rotation into the next moving structure rather than introducing a backward return edge.
+
+The invariant center carries five co-present representation facets:
+
+```text
+CENTER_SIGN = {HBI, HBP, SHA, SH, HASH}
+CURRENT_UTTERANCE_ORDER = HBI -> HBP -> SHA -> SH -> HASH
+```
+
+Facet membership and utterance order do not imply a transport chain.
 
 ## What is established
 
