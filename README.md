@@ -106,7 +106,23 @@ superintelligence. Those interpretations require separate definitions, predictio
 
 ## Reproduce
 
+On Windows, double-click `LAUNCH-RELIC.cmd`. The one-button path runs the Relic tests, the
+simulator tests, the temporal metatag render, the generation comparison, and exact receipt/source
+hash checks when the three sibling repositories are present. It finishes with a tuple-text
+`RESULT|status=PASS` or `RESULT|status=HOLD` line.
+
+The launcher is verification-only by default: `E=0`, network and port opening are disabled,
+no background service is started, and recovery remains a non-executing policy. Its center-sign
+order is exactly `HBI -> HBP -> SHA -> SH -> HASH`, with `transport_chain_inferred=0`.
+
+The additive [`SEN_T_I_E_N_C_E` test plan](MICROTUBULE-CLAUSTRUM-SENTIENCE-TEST-PLAN.md)
+maps Jesse's free-center/claustrum observation and Felipe's microtubule report into an offline,
+falsifiable model. It keeps logical tubule `0_i` addresses, foggy concentration subnets, MRI
+claustrum measurements, ternary spectral recurrence, and claims of subjective experience on
+separate evidence axes.
+
 ```powershell
+./scripts/launch-relic.ps1
 python relic_rediscovery.py --levels 5
 python -m unittest -v
 ```
