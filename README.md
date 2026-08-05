@@ -121,6 +121,11 @@ falsifiable model. It keeps logical tubule `0_i` addresses, foggy concentration 
 claustrum measurements, ternary spectral recurrence, and claims of subjective experience on
 separate evidence axes.
 
+The [`TRI_D_O_A_E_SCOPE` test plan](TRIDOSCOPE-LIGHT-ABSORPTION-TEST-PLAN.md) adds
+ordinary radiation-pressure, optical-torque, `OILED_LIGHT`, three-inversion gyro provenance,
+the three-point spherical shelf, center slot 4 with `C=1`, and separate three-state/four-state
+Shannon ledgers. It explicitly grants no anti-gravity, FTL, or unverified-space force term.
+
 ```powershell
 ./scripts/launch-relic.ps1
 python relic_rediscovery.py --levels 5
