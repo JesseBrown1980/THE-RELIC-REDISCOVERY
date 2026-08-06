@@ -1,6 +1,18 @@
 import unittest
 
-from relic_rediscovery import FREE_CENTER, anchor, exponent, multiplier, structure, waves
+from relic_rediscovery import (
+    CENTER_VALUE,
+    CURRENT_UTTERANCE_ORDER,
+    FREE_CENTER,
+    Z_LEVELS,
+    anchor,
+    center_at_z,
+    exponent,
+    multiplier,
+    render,
+    structure,
+    waves,
+)
 
 
 class RelicRediscoveryTests(unittest.TestCase):
@@ -28,6 +40,25 @@ class RelicRediscoveryTests(unittest.TestCase):
     def test_free_center_is_invariant(self):
         for level in range(10):
             self.assertEqual(structure(level).center, FREE_CENTER)
+            self.assertEqual(structure(level).center_value, CENTER_VALUE)
+
+    def test_center_is_one_at_every_z_level(self):
+        for z in (*Z_LEVELS, -999, 999, "ANY_Z"):
+            self.assertEqual(center_at_z(z), 1)
+
+    def test_z_closes_forward_without_bidirectionality(self):
+        output = render(1)
+        self.assertIn("X -> Y -> Z -> END_0 -> NEXT_IS", output)
+        self.assertIn("bidirectional=0", output)
+        self.assertIn("reverse=0", output)
+        self.assertIn("round_trip=0", output)
+        self.assertIn("exchange=0", output)
+
+    def test_center_sign_preserves_current_utterance_order(self):
+        self.assertEqual(
+            CURRENT_UTTERANCE_ORDER,
+            ("HBI", "HBP", "SHA", "SH", "HASH"),
+        )
 
     def test_negative_levels_are_rejected(self):
         with self.assertRaises(ValueError):

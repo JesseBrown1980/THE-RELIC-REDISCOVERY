@@ -1,0 +1,22 @@
+{
+  "schema": "RELIC_PUBLIC_EVIDENCE_FIXTURE_V1",
+  "captured_utc": "2026-08-05T00:00:00Z",
+  "records": [
+    {
+      "id": "NOAA_ICAG_2023_TABLE_MOUNTAIN",
+      "kind": "MEASURED_ACCELERATION",
+      "value_m_s2": 9.79622742,
+      "source": "https://geodesy.noaa.gov/GRAV-D/icag.shtml",
+      "scope": "Table Mountain Gravity Observatory approximate published value"
+    },
+    {
+      "id": "RCSB_PDB_5JCO",
+      "kind": "MICROTUBULE_STRUCTURE",
+      "method": "ELECTRON_MICROSCOPY",
+      "resolution_angstrom": 4.0,
+      "organism": "Homo sapiens",
+      "source": "https://www.rcsb.org/structure/5JCO",
+      "scope": "recombinant neuronal human tubulin microtubule structure"
+    }
+  ]
+}

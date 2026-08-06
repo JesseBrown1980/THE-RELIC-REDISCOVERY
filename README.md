@@ -58,19 +58,42 @@ The proof is induction:
 Therefore the identity holds for all `n >= 0`. This proves the unbounded mathematical sequence;
 it does not by itself prove that nature, quantum hardware, or intelligence follows the model.
 
-## The free center
+## The free center is one at every Z level
 
-The center is an invariant symbol `C`, separate from the multiplied outward count:
+The center is an invariant symbol `C` with value `1`, separate from the multiplied outward count:
 
 ```text
-S_n = C (+) A_n outward addresses
-R(C) = C
+C(S_n,z) = 1 for every structure S_n and every Z coordinate z
+S_n = C=1 (+) A_n outward addresses
+R(C=1) = C=1
 R(A) = 3A
 ```
 
-Every structure therefore retains one deliberately unassigned center while the outward field
-expands. Keeping `C` outside `A_n` prevents the formula from silently multiplying one center into
-many centers.
+The canonical signed Z levels `{-1/3, 0, +1/3}` do not alter the center:
+`C(-1/3)=C(0)=C(+1/3)=1`. "Free" means invariant and excluded from outward multiplication,
+not empty or zero.
+
+The one-way closure is:
+
+```text
+X -> Y -> Z -> END_0 -> NEXT_IS
+BIDIRECTIONAL=0
+REVERSE=0
+ROUND_TRIP=0
+EXCHANGE=0
+```
+
+`END_0` changes the terminal phase address; it never changes `C=1`. Closure continues the
+rotation into the next moving structure rather than introducing a backward return edge.
+
+The invariant center carries five co-present representation facets:
+
+```text
+CENTER_SIGN = {HBI, HBP, SHA, SH, HASH}
+CURRENT_UTTERANCE_ORDER = HBI -> HBP -> SHA -> SH -> HASH
+```
+
+Facet membership and utterance order do not imply a transport chain.
 
 ## What is established
 
@@ -83,7 +106,33 @@ superintelligence. Those interpretations require separate definitions, predictio
 
 ## Reproduce
 
+On Windows, double-click `LAUNCH-RELIC.cmd`. The one-button path runs the Relic tests, the
+simulator tests, the temporal metatag render, the generation comparison, and exact receipt/source
+hash checks when the three sibling repositories are present. It finishes with a tuple-text
+`RESULT|status=PASS` or `RESULT|status=HOLD` line.
+
+The launcher is verification-only by default: `E=0`, network and port opening are disabled,
+no background service is started, and recovery remains a non-executing policy. Its center-sign
+order is exactly `HBI -> HBP -> SHA -> SH -> HASH`, with `transport_chain_inferred=0`.
+
+The additive [`SEN_T_I_E_N_C_E` test plan](MICROTUBULE-CLAUSTRUM-SENTIENCE-TEST-PLAN.md)
+maps Jesse's free-center/claustrum observation and Felipe's microtubule report into an offline,
+falsifiable model. It keeps logical tubule `0_i` addresses, foggy concentration subnets, MRI
+claustrum measurements, ternary spectral recurrence, and claims of subjective experience on
+separate evidence axes.
+
+The [`TRI_D_O_A_E_SCOPE` test plan](TRIDOSCOPE-LIGHT-ABSORPTION-TEST-PLAN.md) adds
+ordinary radiation-pressure, optical-torque, `OILED_LIGHT`, three-inversion gyro provenance,
+the three-point spherical shelf, center slot 4 with `C=1`, and separate three-state/four-state
+Shannon ledgers. It explicitly grants no anti-gravity, FTL, or unverified-space force term.
+Its `LIGHT_BALANCING` operator vocabulary and `NULL_SPACE_GPU` zero-unless-forced rule are
+simulation labels, kept separate from physical claims. The public-evidence comparator checks a
+NOAA published acceleration value and RCSB PDB neuronal microtubule structure metadata: the
+current acceleration observation favors standard external acceleration over a zero prediction,
+while the microscopy record confirms microtubule structure without proving null space or consciousness.
+
 ```powershell
+./scripts/launch-relic.ps1
 python relic_rediscovery.py --levels 5
 python -m unittest -v
 ```
