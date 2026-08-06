@@ -1,0 +1,121 @@
+name: HBI HBP SHA SH HASH Git receipts
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  receipt:
+    runs-on: windows-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out the exact revision
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+
+      - name: Select Python
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.12'
+
+      - name: Enforce Rust 1.81 integer-only Clippy gate
+        id: rust_gate
+        shell: pwsh
+        run: |
+          $rustFiles = @(Get-ChildItem -Recurse -File -Filter '*.rs' |
+            Where-Object { $_.FullName -notmatch '[\\/](\.git|target)[\\/]' })
+          $cargoFiles = @(Get-ChildItem -Recurse -File -Filter 'Cargo.toml' |
+            Where-Object { $_.FullName -notmatch '[\\/](\.git|target)[\\/]' })
+          if ($rustFiles.Count -eq 0 -and $cargoFiles.Count -eq 0) {
+            'rust_present=0' | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
+            Write-Host 'RUST|present=0|toolchain=NOT_APPLICABLE|integer_only=NOT_APPLICABLE|clippy=NOT_APPLICABLE'
+            exit 0
+          }
+
+          'rust_present=1' | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
+          if (-not (Test-Path -LiteralPath 'Cargo.toml' -PathType Leaf)) {
+            throw 'Rust is present but the repository-root Cargo.toml is missing.'
+          }
+          if (-not (Test-Path -LiteralPath 'rust-toolchain.toml' -PathType Leaf)) {
+            throw 'Rust is present but rust-toolchain.toml is missing.'
+          }
+          $toolchain = Get-Content -Raw -LiteralPath 'rust-toolchain.toml'
+          if ($toolchain -notmatch '(?m)^\s*channel\s*=\s*["'']1\.81\.0["'']\s*$') {
+            throw 'Rust toolchain must be exactly 1.81.0.'
+          }
+
+          $floatPattern = '\bf(?:32|64)\b|\b[0-9][0-9_]*f(?:32|64)\b|\b[0-9][0-9_]*(?:\.[0-9][0-9_]*)?[eE][+-]?[0-9][0-9_]*\b|\b[0-9][0-9_]*\.[0-9][0-9_]*\b'
+          $floatHits = @($rustFiles | Select-String -Pattern $floatPattern)
+          if ($floatHits.Count -ne 0) {
+            $floatHits | ForEach-Object { Write-Host $_ }
+            throw 'Rust source contains a floating-point type or literal; ternary Rust must be integer-only.'
+          }
+
+          & rustup toolchain install 1.81.0 --profile minimal --component clippy
+          if ($LASTEXITCODE -ne 0) { throw 'Unable to install Rust 1.81.0 with Clippy.' }
+          $rustVersion = @(& rustc '+1.81.0' --version 2>&1)
+          if ($LASTEXITCODE -ne 0 -or ($rustVersion -join ' ') -notmatch '^rustc 1\.81\.0(?:\s|$)') {
+            throw 'rustc did not report version 1.81.0.'
+          }
+          foreach ($cargoFile in @($cargoFiles | Sort-Object FullName -Unique)) {
+            Write-Host "[clippy] manifest=$($cargoFile.FullName)"
+            & cargo '+1.81.0' clippy --manifest-path $cargoFile.FullName --all-targets --all-features -- -D warnings -D 'clippy::float_arithmetic' -D 'clippy::float_cmp' -D 'clippy::cast_precision_loss'
+            if ($LASTEXITCODE -ne 0) {
+              throw "Rust 1.81.0 Clippy gate failed for $($cargoFile.FullName)."
+            }
+          }
+          Write-Host 'RUST|present=1|toolchain=1.81.0|integer_only=PASS|clippy=PASS'
+
+      - name: Run repository tests
+        shell: pwsh
+        run: python -m unittest -v
+
+      - name: Run Git event facet tests
+        shell: pwsh
+        run: python -m unittest -v verify_git_event_facets
+
+      - name: Emit HBI HBP SHA SH HASH files
+        if: always()
+        shell: pwsh
+        env:
+          RELIC_REPOSITORY: ${{ github.repository }}
+          RELIC_EVENT: ${{ github.event_name }}
+          RELIC_REF: ${{ github.ref }}
+          RELIC_BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before || github.sha }}
+          RELIC_HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+          RELIC_PULL_NUMBER: ${{ github.event.pull_request.number || 0 }}
+          RELIC_RUN_ID: ${{ github.run_id }}
+          RELIC_RUN_ATTEMPT: ${{ github.run_attempt }}
+          RELIC_VERIFICATION_STATUS: ${{ job.status }}
+          RELIC_RUST_PRESENT: ${{ steps.rust_gate.outputs.rust_present || 0 }}
+          RELIC_RUST_GATE_STATUS: ${{ steps.rust_gate.outcome }}
+        run: |
+          python git_event_facets.py emit `
+            --repository $env:RELIC_REPOSITORY `
+            --event $env:RELIC_EVENT `
+            --ref $env:RELIC_REF `
+            --base-sha $env:RELIC_BASE_SHA `
+            --head-sha $env:RELIC_HEAD_SHA `
+            --pull-number $env:RELIC_PULL_NUMBER `
+            --run-id $env:RELIC_RUN_ID `
+            --run-attempt $env:RELIC_RUN_ATTEMPT `
+            --verification-status $env:RELIC_VERIFICATION_STATUS `
+            --rust-present $env:RELIC_RUST_PRESENT `
+            --rust-gate-status $env:RELIC_RUST_GATE_STATUS `
+            --output .relic-trace
+
+      - name: Retain the five files
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: HBI-HBP-SHA-SH-HASH-${{ github.event_name }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .relic-trace/
+          if-no-files-found: error
+          include-hidden-files: true
+          retention-days: 90
