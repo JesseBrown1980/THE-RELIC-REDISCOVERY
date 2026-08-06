@@ -117,4 +117,5 @@ jobs:
           name: HBI-HBP-SHA-SH-HASH-${{ github.event_name }}-${{ github.run_id }}-${{ github.run_attempt }}
           path: .relic-trace/
           if-no-files-found: error
+          include-hidden-files: true
           retention-days: 90
