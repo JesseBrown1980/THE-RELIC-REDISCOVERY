@@ -261,7 +261,7 @@ def regenerate_leaf(address: bytes) -> int:
 
 
 # --------------------------------------------------------------------------
-# 8. Lab 02 (Light-Bank): 27 ordered colours = free centre + signed differences
+# 8. Lab 02 (Light-Bank): 27 ordered colours = common-mode coordinate + signed differences
 
 
 def colour_triples() -> list[tuple[int, int, int]]:
@@ -277,7 +277,7 @@ def colour_address(t: tuple[int, int, int]) -> int:
 def colour_split(t: tuple[int, int, int]) -> tuple[int, tuple[int, int, int]]:
     """Common mode S (the all-ones direction) and signed differences d_i = 3 x_i - S.
 
-    d = 3 P x with P = I - J/3, the projector off the free centre; sum(d) = 0.
+    d = 3 P x with P = I - J/3, which annihilates the common-mode line; sum(d) = 0.
     """
     s = sum(t)
     return s, tuple(3 * x - s for x in t)
