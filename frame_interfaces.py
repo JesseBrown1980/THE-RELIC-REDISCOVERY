@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import argparse
 from itertools import permutations, product
+from math import gcd
 
 CENTER_COUNT = 1
 CENTER_COORDINATE = 0
@@ -257,6 +258,59 @@ def regenerate_leaf(address: bytes) -> int:
     return 3 ** (landing_depth(level) + step)
 
 
+
+
+# --------------------------------------------------------------------------
+# 8. Lab 02 (Light-Bank): 27 ordered colours = free centre + signed differences
+
+
+def colour_triples() -> list[tuple[int, int, int]]:
+    """The 27 ordered ternary colour triples (r, g, b), each trit in {0, 1, 2}."""
+    return [tuple(t) for t in product(range(3), repeat=3)]
+
+
+def colour_address(t: tuple[int, int, int]) -> int:
+    """Rainbow-sector address a = 9r + 3g + b."""
+    return 9 * t[0] + 3 * t[1] + t[2]
+
+
+def colour_split(t: tuple[int, int, int]) -> tuple[int, tuple[int, int, int]]:
+    """Common mode S (the all-ones direction) and signed differences d_i = 3 x_i - S.
+
+    d = 3 P x with P = I - J/3, the projector off the free centre; sum(d) = 0.
+    """
+    s = sum(t)
+    return s, tuple(3 * x - s for x in t)
+
+
+def colour_inverse(s: int, d: tuple[int, int, int]) -> tuple[int, int, int]:
+    """Exact inverse: x_i = (S + d_i) / 3."""
+    assert all((s + di) % 3 == 0 for di in d)
+    return tuple((s + di) // 3 for di in d)
+
+
+def colour_intensity(t: tuple[int, int, int]) -> tuple[int, int, int]:
+    """Fourier intensities (S^2, Q, Q), Q = r^2 + g^2 + b^2 - rg - rb - gb."""
+    r, g, b = t
+    s = r + g + b
+    q = r * r + g * g + b * b - r * g - r * b - g * b
+    return (s * s, q, q)
+
+
+def colour_intensity_class(t: tuple[int, int, int]):
+    """Normalized routing class: the ratio S^2 : Q, or 'zero' for the empty triple."""
+    a, q, _ = colour_intensity(t)
+    if a == 0 and q == 0:
+        return "zero"
+    g = gcd(a, q)
+    return (a // g, q // g)
+
+
+def projector_rank() -> int:
+    """rank(3P) = rank(3I - J) over the rationals."""
+    return integer_rank([[3 * (i == j) - 1 for j in range(3)] for i in range(3)])
+
+
 # --------------------------------------------------------------------------
 
 
@@ -282,6 +336,12 @@ def report() -> str:
         f"{int(tuple(map(sum, zip(*symmetric_triangle((5, 2))))) == (0, 0))}",
         f"HEBC|quantum_double_S3_anyons={quantum_double_anyons(s3_elements())}"
         f"|torus_ground_space=8",
+        f"LAB02|triples={len(colour_triples())}"
+        f"|addresses={len({colour_address(t) for t in colour_triples()})}"
+        f"|split_inverse_exact={int(all(colour_inverse(*colour_split(t)) == t for t in colour_triples()))}"
+        f"|raw_intensity_signatures={len({colour_intensity(t) for t in colour_triples()})}"
+        f"|normalized_classes={len({colour_intensity_class(t) for t in colour_triples()})}"
+        f"|projector_rank={projector_rank()}",
         f"HTTP0|address_bytes={len(transported_address(4, 5))}"
         f"|leaf_digits={len(str(regenerate_leaf(transported_address(4, 5))))}",
     ]

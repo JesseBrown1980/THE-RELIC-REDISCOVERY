@@ -159,7 +159,7 @@ try {
     Write-Host '[safety] E=0 network=0 port_open=0 background_service=0 destructive_wipe=0 auto_recovery=0'
 
     Invoke-PythonChecked -Label 'Relic reference tests' -WorkingDirectory $repoRoot `
-        -Arguments @('-m', 'unittest', '-v') -ExpectedTests 63
+        -Arguments @('-m', 'unittest', '-v') -ExpectedTests 69
     Invoke-PythonChecked -Label 'Relic expanding-wave view' -WorkingDirectory $repoRoot `
         -Arguments @('relic_rediscovery.py', '--levels', $Levels.ToString())
     Invoke-PythonChecked -Label 'Zero-centred frame and interfaces' -WorkingDirectory $repoRoot `

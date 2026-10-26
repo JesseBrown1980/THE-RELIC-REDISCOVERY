@@ -172,6 +172,45 @@ regenerates each wave value exactly, up to 3^25. This is
 [the-leaves-are-not-the-message](https://github.com/JesseBrown1980/the-leaves-are-not-the-message)
 as a protocol: the generator and the path are the message.
 
+## 9. Worked example: Lab 02 of the Light-Bank (27 ordered colours)
+
+[Lab 02 of the Asolaria Light-Bank](https://jessebrown1980.github.io/light-boat-engine-ships-with-oils/asolaria-lightbank-demo/)
+gives each ordered ternary colour triple (r, g, b) its own address,
+a = 9r + 3g + b, one for each of 27 colours. It is the zero-centred frame at
+its smallest size.
+
+```text
+S   = r + g + b                    the common mode: the all-ones direction, the free centre
+d_i = 3 x_i − S,   Σ d_i = 0       the signed differences: d = 3P x,  P = I − J/3,  rank(P) = 2
+x_i = (S + d_i) / 3                exact inverse, all 27 triples
+```
+
+**What intensity cannot see.** The Fourier intensities are (S², Q, Q), with
+Q = r² + g² + b² − rg − rb − gb. Over the integers, Σ d_i² = 6Q, so intensity
+keeps the centre and the length of the difference vector, and loses its
+direction.
+- The 27 ordered triples collapse to 10 raw intensity signatures.
+- Normalized, they collapse to 7 routing classes, counting the empty triple.
+- Rotating the channels R → G → B keeps the intensity and changes the address:
+  (2, 0, 0) and (0, 2, 0) both read (4, 4, 4).
+
+This is §3's reconstruction condition in a case small enough to check
+completely. Intensity is not injective on the 27 colours; the centre plus the
+signed differences is.
+
+**The same split as the momentum sectors.** Rotating the three channels is a
+Z₃ action. Over the rationals, the colour space splits as the invariant line
+(the centre, dimension 1) plus one two-dimensional part (the differences).
+HEB-C splits each momentum line of the 3×3 torus the same way: the
+zero-momentum part, plus the two-dimensional rational representation carrying
+±k. The full-space count adds the pieces back by Möbius inversion, and on 2×2
+that gives 616 = 616 against the independent route. The colour bank, the
+invariant watcher (rank 26 of 27, null vector all ones) and the Yang–Mills
+sector count use one decomposition.
+
+The `LAB02` row of `frame_interfaces.py` checks every number in this section,
+and so do the six `LightBankLab02Tests`.
+
 ## Run
 
 ```bash

@@ -2,6 +2,14 @@ import random
 import unittest
 
 from frame_interfaces import (
+    colour_address,
+    colour_intensity,
+    colour_intensity_class,
+    colour_inverse,
+    colour_split,
+    colour_triples,
+    integer_rank,
+    projector_rank,
     CENTER_COORDINATE,
     CENTER_COUNT,
     addresses,
@@ -126,6 +134,50 @@ class TransportTests(unittest.TestCase):
                 addr = transported_address(level, step)
                 self.assertLess(len(addr), 32)
                 self.assertEqual(regenerate_leaf(addr), anchor(level) * 3**step)
+
+
+class LightBankLab02Tests(unittest.TestCase):
+    def test_twenty_seven_ordered_addresses(self):
+        addrs = sorted(colour_address(t) for t in colour_triples())
+        self.assertEqual(addrs, list(range(27)))
+        self.assertEqual(colour_address((2, 0, 0)), 18)
+
+    def test_centre_plus_differences_inverts_exactly(self):
+        for t in colour_triples():
+            s, d = colour_split(t)
+            self.assertEqual(sum(d), 0)  # differences live off the free centre
+            self.assertEqual(colour_inverse(s, d), t)
+        self.assertEqual(colour_split((2, 0, 0)), (2, (4, -2, -2)))
+
+    def test_intensity_alone_loses_the_order(self):
+        self.assertEqual(len({colour_intensity(t) for t in colour_triples()}), 10)
+        self.assertEqual(len({colour_intensity_class(t) for t in colour_triples()}), 7)
+        self.assertEqual(colour_intensity((2, 0, 0)), (4, 4, 4))
+        # a rotation R -> G -> B keeps the intensity and changes the address
+        t, rot = (2, 0, 0), (0, 2, 0)
+        self.assertEqual(colour_intensity(t), colour_intensity(rot))
+        self.assertNotEqual(colour_address(t), colour_address(rot))
+
+    def test_intensity_keeps_only_the_centre_and_the_difference_norm(self):
+        for t in colour_triples():
+            s, d = colour_split(t)
+            a, q, _ = colour_intensity(t)
+            self.assertEqual(a, s * s)
+            self.assertEqual(sum(x * x for x in d), 6 * q)
+
+    def test_projector_off_the_centre(self):
+        self.assertEqual(projector_rank(), 2)
+        three_p = [[3 * (i == j) - 1 for j in range(3)] for i in range(3)]
+        self.assertEqual([sum(row) for row in three_p], [0, 0, 0])  # kills the all-ones centre
+        self.assertEqual(integer_rank([[1, 1, 1]]), 1)
+
+    def test_same_split_as_the_momentum_sectors(self):
+        # Z3 rotating the channels: V = V^T (dimension 1, the centre) + one
+        # two-dimensional rational part (the differences) -- the Mobius split
+        # HEB-C uses for each momentum line.
+        invariant = [t for t in colour_triples() if t[0] == t[1] == t[2]]
+        self.assertEqual(len(invariant), 3)  # one per value of S/3: the centre line
+        self.assertEqual(1 + projector_rank(), 3)
 
 
 if __name__ == "__main__":
