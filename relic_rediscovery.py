@@ -9,7 +9,10 @@ from fractions import Fraction
 FREE_CENTER = "C"
 
 
-CENTER_VALUE = 1
+# One centre (count 1) at coordinate 0. CENTER_VALUE is the count.
+CENTER_COUNT = 1
+CENTER_COORDINATE = 0
+CENTER_VALUE = CENTER_COUNT
 Z_LEVELS = (Fraction(-1, 3), Fraction(0, 1), Fraction(1, 3))
 END_ZERO = 0
 ROTATIONAL_CLOSURE = 'X_TO_Y_TO_Z_TO_END_0_TO_NEXT_IS'
@@ -18,8 +21,13 @@ CURRENT_UTTERANCE_ORDER = CENTER_SIGN
 
 
 def center_at_z(_z: object) -> int:
-    '''The invariant center remains one at every Z coordinate.'''
-    return CENTER_VALUE
+    '''There is exactly one invariant center at every Z coordinate.'''
+    return CENTER_COUNT
+
+
+def center_coordinate_at_z(_z: object) -> int:
+    '''The center's coordinate is 0 at every Z coordinate.'''
+    return CENTER_COORDINATE
 
 
 def _require_nonnegative(value: int, name: str) -> None:

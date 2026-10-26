@@ -153,15 +153,17 @@ $launcherExitCode = 1
 try {
     Resolve-PythonCommand
     Write-Host '[launcher] THE RELIC REDISCOVERY'
-    Write-Host '[center] C=1 at every Z'
+    Write-Host '[center] one center, coordinate 0, at every Z'
     Write-Host '[sign] HBI -> HBP -> SHA -> SH -> HASH'
     Write-Host '[boundary] transport_chain_inferred=0 bidirectional=0 reverse=0 round_trip=0 exchange=0'
     Write-Host '[safety] E=0 network=0 port_open=0 background_service=0 destructive_wipe=0 auto_recovery=0'
 
     Invoke-PythonChecked -Label 'Relic reference tests' -WorkingDirectory $repoRoot `
-        -Arguments @('-m', 'unittest', '-v') -ExpectedTests 49
+        -Arguments @('-m', 'unittest', '-v') -ExpectedTests 63
     Invoke-PythonChecked -Label 'Relic expanding-wave view' -WorkingDirectory $repoRoot `
         -Arguments @('relic_rediscovery.py', '--levels', $Levels.ToString())
+    Invoke-PythonChecked -Label 'Zero-centred frame and interfaces' -WorkingDirectory $repoRoot `
+        -Arguments @('frame_interfaces.py')
     Invoke-PythonChecked -Label 'SEN_T_I_E_N_C_E microtubule/claustrum hypothesis view' `
         -WorkingDirectory $repoRoot -Arguments @('sentience_microtubule_model.py')
     Invoke-PythonChecked -Label 'TRI_D_O_A_E_SCOPE spherical dradil view' `

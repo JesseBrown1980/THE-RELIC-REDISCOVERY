@@ -95,6 +95,30 @@ CURRENT_UTTERANCE_ORDER = HBI -> HBP -> SHA -> SH -> HASH
 
 Facet membership and utterance order do not imply a transport chain.
 
+## The zero-centred frame
+
+The centre is counted once and sits at coordinate 0. The observer supplies the
+readout frame:
+
+```text
+(0; p1, p2, p3; O),     R(0) = 0.
+```
+
+[`FRAME-AND-INTERFACES.md`](FRAME-AND-INTERFACES.md) fixes how this frame connects
+to everything built on it:
+- the dimension spanned by the points around 0;
+- the exact condition under which one point plus the zero reconstructs a state;
+- the network inside the network, and the Relic landings as selected depths
+  3, 5, 8, 12, 17, …;
+- nested S₃ symmetry, of order 6^((3^d − 1)/2);
+- Jacobi coordinates for three and N bodies in the zero centre-of-mass frame;
+- the HEB-C local zero and the eight-dimensional torus ground space, matching
+  the 8 anyons of D(S₃);
+- HTTP-0 transport, where the address travels and the leaves regenerate.
+
+[`frame_interfaces.py`](frame_interfaces.py) checks every statement in integer
+arithmetic.
+
 ## What is established
 
 - The recurrence, closed form, induction proof, and listed integers are exact mathematics.

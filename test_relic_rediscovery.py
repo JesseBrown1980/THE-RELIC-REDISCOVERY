@@ -1,12 +1,15 @@
 import unittest
 
 from relic_rediscovery import (
+    CENTER_COORDINATE,
+    CENTER_COUNT,
     CENTER_VALUE,
     CURRENT_UTTERANCE_ORDER,
     FREE_CENTER,
     Z_LEVELS,
     anchor,
     center_at_z,
+    center_coordinate_at_z,
     exponent,
     multiplier,
     render,
@@ -45,6 +48,11 @@ class RelicRediscoveryTests(unittest.TestCase):
     def test_center_is_one_at_every_z_level(self):
         for z in (*Z_LEVELS, -999, 999, "ANY_Z"):
             self.assertEqual(center_at_z(z), 1)
+
+    def test_one_center_at_coordinate_zero_at_every_z_level(self):
+        self.assertEqual((CENTER_COUNT, CENTER_COORDINATE, CENTER_VALUE), (1, 0, 1))
+        for z in (*Z_LEVELS, -999, 999, "ANY_Z"):
+            self.assertEqual(center_coordinate_at_z(z), 0)
 
     def test_z_closes_forward_without_bidirectionality(self):
         output = render(1)
