@@ -175,41 +175,51 @@ as a protocol: the generator and the path are the message.
 ## 9. Worked example: Lab 02 of the Light-Bank (27 ordered colours)
 
 [Lab 02 of the Asolaria Light-Bank](https://jessebrown1980.github.io/light-boat-engine-ships-with-oils/asolaria-lightbank-demo/)
-gives each ordered ternary colour triple (r, g, b) its own address,
-a = 9r + 3g + b, one for each of 27 colours. It is the zero-centred frame at
-its smallest size.
+is a verified software computation on the 27 ordered ternary colour triples
+(r, g, b). Each triple has its own address, a = 9r + 3g + b. It is the
+zero-centred frame at its smallest size.
 
 ```text
-S   = r + g + b                    the common mode: the all-ones direction, the free centre
-d_i = 3 x_i − S,   Σ d_i = 0       the signed differences: d = 3P x,  P = I − J/3,  rank(P) = 2
-x_i = (S + d_i) / 3                exact inverse, all 27 triples
+ℚ³ = V₀ ⊕ V₁,   V₀ = span{(1,1,1)},   V₁ = {d : Σ d_i = 0}
+x  = (S/3)·1 + d/3,   S = Σ x_i,   d = 3x − S·1 = 3P x,   P = I − J/3,   rank(P) = 2
 ```
 
-**What intensity cannot see.** The Fourier intensities are (S², Q, Q), with
-Q = r² + g² + b² − rg − rb − gb. Over the integers, Σ d_i² = 6Q, so intensity
-keeps the centre and the length of the difference vector, and loses its
-direction.
+**The parts.**
+- V₀ is the invariant common-mode direction, the centre direction, and S is
+  its coordinate.
+- The zero centre itself is the origin (0, 0, 0).
+- P annihilates the whole common-mode line, so all three rotation-invariant
+  colours (0, 0, 0), (1, 1, 1) and (2, 2, 2) map to d = 0.
+- V₁ carries the signed differences.
+
+**Reconstruction.** The readout Φ(r, g, b) = (S, d_r, d_g) is injective on all
+27 colours. The inverse is x_i = (S + d_i)/3, with d_b = −d_r − d_g. The
+intensity readout Ψ(r, g, b) = (S², Q, Q), with Q = r² + g² + b² − rg − rb − gb,
+is not injective.
+- Over the integers Σ d_i² = 6Q, so intensity keeps the centre coordinate and
+  the length of the difference vector, and loses its direction.
 - The 27 ordered triples collapse to 10 raw intensity signatures.
 - Normalized, they collapse to 7 routing classes, counting the empty triple.
 - Rotating the channels R → G → B keeps the intensity and changes the address:
   (2, 0, 0) and (0, 2, 0) both read (4, 4, 4).
 
 This is §3's reconstruction condition in a case small enough to check
-completely. Intensity is not injective on the 27 colours; the centre plus the
-signed differences is.
+completely, and memory as an exact rebuild under a known rule.
 
-**The same split as the momentum sectors.** Rotating the three channels is a
-Z₃ action. Over the rationals, the colour space splits as the invariant line
-(the centre, dimension 1) plus one two-dimensional part (the differences).
-HEB-C splits each momentum line of the 3×3 torus the same way: the
-zero-momentum part, plus the two-dimensional rational representation carrying
-±k. The full-space count adds the pieces back by Möbius inversion, and on 2×2
-that gives 616 = 616 against the independent route. The colour bank, the
-invariant watcher (rank 26 of 27, null vector all ones) and the Yang–Mills
-sector count use one decomposition.
+**Shared representation pattern.** Cyclic channel rotation gives the rational
+1 + 2 decomposition: one invariant direction plus one two-dimensional difference
+representation. Each three-cycle momentum line of the HEB-C 3×3 torus has the
+same rational pattern: zero momentum plus a two-dimensional part. Over ℂ that
+part separates further into the +k and −k characters. The HEB-C full-space
+count assembles these parts by Möbius inversion with its own operator and
+receipts ([HEB-C `results/full_space_mobius/`](https://github.com/JesseBrown1980/Finite-universe-Yang-mills-existence-and-mass-gap-using-HEB-C/tree/http0-ym-backend-finite-volumes/native/ym/results/full_space_mobius)).
+The invariant watcher of the neural network inside a neural network shares the
+idea of a conserved all-ones direction, on its own 27-mode operator.
 
-The `LAB02` row of `frame_interfaces.py` checks every number in this section,
-and so do the six `LightBankLab02Tests`.
+**Checks.** The `LAB02` row of `frame_interfaces.py` and the six
+`LightBankLab02Tests` exhaustively verify Lab 02's finite claims. The watcher
+and HEB-C results are external interfaces, and each carries its own
+certificate.
 
 ## Run
 

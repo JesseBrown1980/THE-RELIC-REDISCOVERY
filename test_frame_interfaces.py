@@ -171,12 +171,14 @@ class LightBankLab02Tests(unittest.TestCase):
         self.assertEqual([sum(row) for row in three_p], [0, 0, 0])  # kills the all-ones centre
         self.assertEqual(integer_rank([[1, 1, 1]]), 1)
 
-    def test_same_split_as_the_momentum_sectors(self):
-        # Z3 rotating the channels: V = V^T (dimension 1, the centre) + one
-        # two-dimensional rational part (the differences) -- the Mobius split
-        # HEB-C uses for each momentum line.
+    def test_colour_z3_representation_split(self):
+        # Z3 rotating the channels: Q^3 = V0 (the common-mode line) + V1 (the
+        # two-dimensional differences). Three colours lie on the common-mode
+        # line, and P maps each of them to d = 0.
         invariant = [t for t in colour_triples() if t[0] == t[1] == t[2]]
-        self.assertEqual(len(invariant), 3)  # one per value of S/3: the centre line
+        self.assertEqual(invariant, [(0, 0, 0), (1, 1, 1), (2, 2, 2)])
+        for t in invariant:
+            self.assertEqual(colour_split(t)[1], (0, 0, 0))
         self.assertEqual(1 + projector_rank(), 3)
 
 

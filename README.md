@@ -115,9 +115,9 @@ to everything built on it:
 - the HEB-C local zero and the eight-dimensional torus ground space, matching
   the 8 anyons of D(S₃);
 - HTTP-0 transport, where the address travels and the leaves regenerate;
-- Lab 02 of the Light-Bank as a worked example: 27 ordered colours are the
-  centre plus signed differences, while intensity alone collapses them to 10
-  signatures and 7 classes.
+- Lab 02 of the Light-Bank as a worked example: each of the 27 ordered colours
+  is rebuilt exactly from its common-mode coordinate and its signed differences,
+  while intensity alone collapses them to 10 signatures and 7 classes.
 
 [`frame_interfaces.py`](frame_interfaces.py) checks every statement in integer
 arithmetic.
